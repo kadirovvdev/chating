@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Clone - Register</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<style>
+    body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background-color: #fafafa;
+    }
+
+    .register-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .phone-image {
+        background-image: url('https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2022/07/custom-instagram-chat-theme.jpg'); /* Replace with the path to your image */
+        background-size: cover;
+        border: 15px solid #000;
+        background-position: center;
+        width: 454px;
+        height: 618px;
+        margin-right: 32px;
+    }
+
+    .form-container {
+        width: 350px;
+        text-align: center;
+        background: white;
+        padding: 40px;
+        border: 1px solid #dbdbdb;
+        border-radius: 3px;
+    }
+
+    .form-title {
+        font-family: 'Billabong', cursive;
+        font-size: 48px;
+        margin-bottom: 20px;
+    }
+
+    .register-form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .register-form input {
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #dbdbdb;
+        border-radius: 3px;
+        background-color: #fafafa;
+        font-size: 14px;
+    }
+
+    .register-form input:focus {
+        outline: none;
+        border-color: #a8a8a8;
+    }
+
+    .register-form button {
+        background-color: #0095f6;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        margin-top: 10px;
+        font-size: 14px;
+    }
+
+    .register-form button:hover {
+        background-color: #007bb5;
+    }
+
+    .divider {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid #dbdbdb;
+    }
+
+    .divider::before {
+        margin-right: .25em;
+    }
+
+    .divider::after {
+        margin-left: .25em;
+    }
+
+    .login-link {
+        margin-top: 10px;
+        font-size: 14px;
+    }
+
+    .login-link a {
+        color: #0095f6;
+        text-decoration: none;
+    }
+
+    .login-link a:hover {
+        text-decoration: underline;
+    }
+
+    .app-download {
+        margin-top: 20px;
+    }
+
+    .app-download a {
+        font-size: 32px;
+        color: red;
+        margin-left: 15px;
+    }
+
+    .app-download a i {
+        font-size: 32px;
+    }
+
+    .alert {
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 3px;
+        font-size: 14px;
+    }
+
+    .alert-{{ message.tags }} {
+        color: #fff;
+        background-color: #dc3545; /* Danger */
+    }
+
+    .form-container .form-control {
+        font-size: 14px;
+        border-radius: 3px;
+        background-color: #fafafa;
+        border: 1px solid #dbdbdb;
+        padding: 10px 50px;
+        display: flex;
+        justify-content: start;
+        margin-bottom: 10px;
+    }
+
+    .form-container .form-control:focus {
+        border-color: #a8a8a8;
+    }
+    .form-cc{
+    max-width: 150px;
+    }
+    .form-container .btn {
+        background-color: #0095f6;
+        border: none;
+        color: white;
+        font-size: 14px;
+        padding: 10px;
+        border-radius: 3px;
+        margin-top: 10px;
+        cursor: pointer;
+    }
+
+    .form-container .btn:hover {
+        background-color: #007bb5;
+    }
+</style>
+<body>
+    <div class="register-container">
+        <div class="phone-image"></div>
+        <div class="form-container">
+            <h1 class="form-title">Chating</h1>
+            {% if messages %}
+            <div>
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <form method="post" action="{% url 'register' %}" enctype="multipart/form-data" class="register-form">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <input type="text" name="username" class="form-control" placeholder="Username" required>
+                </div>
+                <div class="mb-3">
+                    <input type="email" name="email" class="form-control" placeholder="Email address" required>
+                </div>
+                <div class="mb-3">
+                    <input type="password" name="password" class="form-control" placeholder="Password" required>
+                </div>
+
+                <div class="mb-3">
+                    <input type="text" name="first_name" class="form-control" placeholder="First name" required>
+                </div>
+                <div class="mb-3">
+                    <input type="text" name="last_name" class="form-control" placeholder="Last name" required>
+                </div>
+                <div class="mb-3">
+                    <input type="file" name="image" class="form-control form-cc" placeholder="Image">
+                </div>
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+            </form>
+            <div class="divider">OR</div>
+            <div class="login-link">
+                <p>Have an account? <a href="{% url 'login' %}">Log in</a></p>
+            </div>
+            <div class="app-download">
+                <p>Get the app.</p>
+                <a href="https://www.instagram.com" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Messaging App</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{% url 'inbox' %}">Inbox</a>
+            <a href="{% url 'user-search' %}">Search Users</a>
+        </nav>
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>

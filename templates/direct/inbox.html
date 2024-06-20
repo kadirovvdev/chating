@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Clone - Inbox</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #fafafa;
+        }
+
+        .navbar {
+            background-color: #fff;
+            border-bottom: 1px solid #dbdbdb;
+        }
+
+        .navbar-brand {
+            font-family: 'Billabong', cursive;
+            font-size: 32px;
+        }
+
+        .main-container {
+            display: flex;
+            height: calc(100vh - 56px);
+        }
+
+        .sidebar {
+            width: 350px;
+            border-right: 1px solid #dbdbdb;
+            background-color: #fff;
+        }
+
+        .sidebar .search-box {
+            padding: 15px;
+            border-bottom: 1px solid #dbdbdb;
+        }
+
+        .sidebar .search-box input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #dbdbdb;
+            border-radius: 3px;
+            background-color: #fafafa;
+        }
+
+        .sidebar .search-box button {
+            display: none;
+        }
+
+        .sidebar .user-results {
+            padding: 15px;
+            border-bottom: 1px solid #dbdbdb;
+        }
+
+        .sidebar .user-results ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar .user-results li {
+            padding: 5px 0;
+        }
+
+        .sidebar .user-results a {
+            color: #0095f6;
+            text-decoration: none;
+        }
+
+        .sidebar .user-results a:hover {
+            text-decoration: underline;
+        }
+
+        .sidebar .conversations {
+            padding: 15px;
+            overflow-y: auto;
+            height: calc(100vh - 176px);
+        }
+
+        .sidebar .conversations .conversation {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            cursor: pointer;
+            border-bottom: 1px solid #dbdbdb;
+        }
+
+        .sidebar .conversations .conversation img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .sidebar .conversations .conversation .username {
+            font-weight: bold;
+            color: #262626;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #fafafa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .content .message-list {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .content .message {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .content .message .message-text {
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+
+        .content .message.sent .message-text {
+            background-color: #dcf8c6;
+            align-self: flex-end;
+        }
+
+        .content .message.received .message-text {
+            align-self: flex-start;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">Chating</a>
+        </div>
+    </nav>
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="search-box">
+                <form method="get" action="{% url 'user-search' %}">
+                    <input type="text" name="q" placeholder="Search users...">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+            <div class="user-results">
+                {% if users %}
+                <ul>
+                    {% for user in users %}
+                    <li><a href="{% url 'new-message' user.username %}">{{ user.username }}</a></li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            <div class="conversations">
+                {% for message in messages %}
+                <div class="conversation {% if message.user.username == active_direct %}active{% endif %}">
+                    <a href="{% url 'direct' username=message.user.username %}">
+                        <img src="{{ message.user.profile.image.url }}" alt="{{ message.user.username }}">
+                        <div class="username">{{ message.user.username }}</div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="content">
+            {% if directs %}
+            <div class="message-list">
+                {% for direct in directs %}
+                <div class="message {% if direct.sender == user %}sent{% else %}received{% endif %}">
+                    <div class="message-text">{{ direct.text }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="no-conversation">No active conversation</div>
+            {% endif %}
+        </div>
+    </div>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

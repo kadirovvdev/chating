@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .inbox-container {
+        display: flex;
+    }
+
+    .inbox-sidebar {
+        width: 25%;
+        border-right: 1px solid #ddd;
+        padding: 20px;
+    }
+
+    .inbox-main {
+        width: 75%;
+        padding: 20px;
+    }
+
+    .search-bar input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .user-list .user a {
+        display: block;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        text-decoration: none;
+        color: black;
+    }
+
+    .user-list .user a:hover {
+        background-color: #f0f0f0;
+    }
+
+    .direct-messages {
+        border: 1px solid #ddd;
+        padding: 20px;
+        height: 400px;
+        overflow-y: scroll;
+        margin-bottom: 10px;
+    }
+
+    .message {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .send-message textarea {
+        width: 100%;
+        height: 100px;
+        padding: 10px;
+    }
+
+    .send-message button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    .send-message button:hover {
+        background-color: #0056b3;
+    }
+</style>
+<div class="inbox-container">
+    <div class="inbox-sidebar">
+        <div class="search-bar">
+            <input type="text" placeholder="Search...">
+        </div>
+        <div class="user-list">
+            {% for message in messages %}
+            <div class="user">
+                <a href="{% url 'directs' message.user.username %}">{{ message.user.username }}</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="inbox-main">
+        {% if active_direct %}
+        <div class="direct-messages">
+            {% for direct in directs %}
+            <div class="message">
+                <p>{{ direct.body }}</p>
+                <span>{{ direct.timestamp }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="send-message">
+            <form method="post" action="{% url 'send-message' %}">
+                {% csrf_token %}
+                <input type="hidden" name="to_user" value="{{ active_direct }}">
+                <textarea name="body" placeholder="Type your message..."></textarea>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+        {% else %}
+        <p>No active conversation</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

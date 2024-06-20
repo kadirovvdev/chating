@@ -1,0 +1,16 @@
+
+<div class="search-container">
+    <form method="get" action="{% url 'user-search' %}">
+        <input type="text" name="q" placeholder="Search users...">
+        <button type="submit">Search</button>
+    </form>
+    <div class="user-results">
+        {% if users %}
+        <ul>
+            {% for user in users %}
+            <li><a href="{% url 'new-message' user.username %}">{{ user.username }}</a></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</div>
